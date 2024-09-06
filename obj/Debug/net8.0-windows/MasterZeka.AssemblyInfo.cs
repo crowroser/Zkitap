@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MasterZeka")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9b332439394ef2e035b3ab2e4358ddfb8a04c271")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f6a21ecd9968ff6c9e477118d572442e52cfd263")]
 [assembly: System.Reflection.AssemblyProductAttribute("MasterZeka")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MasterZeka")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

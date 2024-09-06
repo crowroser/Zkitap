@@ -20,3 +20,4 @@ C:\Users\fatih\source\repos\MasterZeka\Zkitap\obj\Debug\net8.0-windows\refint\Ma
 C:\Users\fatih\source\repos\MasterZeka\Zkitap\obj\Debug\net8.0-windows\MasterZeka.pdb
 C:\Users\fatih\source\repos\MasterZeka\Zkitap\obj\Debug\net8.0-windows\MasterZeka.genruntimeconfig.cache
 C:\Users\fatih\source\repos\MasterZeka\Zkitap\obj\Debug\net8.0-windows\ref\MasterZeka.dll
+C:\Users\fatih\source\repos\MasterZeka\Zkitap\obj\Debug\net8.0-windows\MasterZeka.Properties.Resources.resources
