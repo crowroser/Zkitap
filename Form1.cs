@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -9,25 +10,32 @@ namespace MasterZeka
 {
     public partial class Form1 : Form
     {
+        int yakinlastirmaSayisi = 0;
+        private bool isDragging = false;
+        private Point dragStartPoint;
+        private Point lastCursor;
+        private Point lastForm;
+        private int originalWidth;
+        private int originalHeight;
         int i = 0;
         string imageurl = "";
         private bool dragging = false;
         private Point dragCursorPoint;
         private Point dragFormPoint;
         private Dictionary<int, Image> imageCache = new Dictionary<int, Image>();
-
         private bool isSelecting = false;
         private Point startPoint;
         private Rectangle selectedRectangle;
-
+        private int kalemboyutu = 2;
         private bool isDrawing = false;
         private Point lastPoint;
         private Bitmap drawingBitmap;
         private Graphics drawingGraphics;
 
+        private float zoomFactor = 1.0f; // Başlangıç yakınlaştırma faktörü
+
         public Form1()
         {
-
             InitializeComponent();
             _ = LoadImageAsync();
             _ = PreloadNextImages();
@@ -36,7 +44,8 @@ namespace MasterZeka
             groupBox1.MouseDown += groupBox1_MouseDown;
             groupBox1.MouseMove += groupBox1_MouseMove;
             groupBox1.MouseUp += groupBox1_MouseUp;
-
+            originalHeight = pictureBox1.Height;
+            originalWidth = pictureBox1.Width;
             pictureBox1.Paint += pictureBox1_Paint;
             pictureBox1.MouseDown += PictureBox1_MouseDown;
             pictureBox1.MouseMove += PictureBox1_MouseMove;
@@ -49,7 +58,12 @@ namespace MasterZeka
 
             // Add drawing overlay to pictureBox
             pictureBox1.Image = drawingBitmap;
+
+            // Yakınlaştırma ve Uzaklaştırma butonları ekleyin
+            button17.Click += button17_Click;
+            button18.Click += button18_Click;
         }
+
 
         private async Task LoadImageAsync()
         {
@@ -217,19 +231,55 @@ namespace MasterZeka
 
         private void button3_Click(object sender, EventArgs e)
         {
-            isSelecting = true;
-            startPoint = Point.Empty; // Ýlk týklanan noktayý sýfýrla
-            selectedRectangle = Rectangle.Empty; // Seçim alanýný sýfýrla
+            if (yakinlastirmaSayisi == 0)
+            {
 
-            pictureBox1.MouseDown += PictureBox1_MouseDown;
-            pictureBox1.MouseMove += PictureBox1_MouseMove;
-            pictureBox1.MouseUp += PictureBox1_MouseUp;
+                isSelecting = true;
+                startPoint = Point.Empty; // Ýlk týklanan noktayý sýfýrla
+                selectedRectangle = Rectangle.Empty; // Seçim alanýný sýfýrla
 
-            pictureBox1.Cursor = Cursors.Cross; // Fare imlecini çarpý iþareti yap
+                pictureBox1.MouseDown += PictureBox1_MouseDown;
+                pictureBox1.MouseMove += PictureBox1_MouseMove;
+                pictureBox1.MouseUp += PictureBox1_MouseUp;
+
+                pictureBox1.Cursor = Cursors.Cross; // Fare imlecini çarpý iþareti yap
+                yakinlastirmaSayisi++;
+            }
+            else
+            {
+                pictureBox1.Image = imageCache[i];
+                pictureBox1.Invalidate();
+                drawingGraphics.Clear(Color.Transparent);
+                ((PictureBox)this.Controls.OfType<PictureBox>().FirstOrDefault()).Invalidate();
+                pictureBox1.MouseDown -= PictureBox1_MouseDown;
+                pictureBox1.MouseMove -= PictureBox1_MouseMove;
+                pictureBox1.MouseUp -= PictureBox1_MouseUp;
+
+                pictureBox1.Cursor = Cursors.Default;
+                pictureBox1.Size = new Size(originalWidth, originalHeight);
+
+                // PictureBox'ı formun ortasında konumlandırın
+                pictureBox1.Location = new Point(
+                    (ClientSize.Width - pictureBox1.Width) / 2,
+                    (ClientSize.Height - pictureBox1.Height) / 2
+                );
+                yakinlastirmaSayisi = 0;
+                isSelecting = true;
+                startPoint = Point.Empty; // Ýlk týklanan noktayý sýfýrla
+                selectedRectangle = Rectangle.Empty; // Seçim alanýný sýfýrla
+
+                pictureBox1.MouseDown += PictureBox1_MouseDown;
+                pictureBox1.MouseMove += PictureBox1_MouseMove;
+                pictureBox1.MouseUp += PictureBox1_MouseUp;
+
+                pictureBox1.Cursor = Cursors.Cross; // Fare imlecini çarpý iþareti yap
+                yakinlastirmaSayisi++;
+            }
         }
-
         private void button6_Click(object sender, EventArgs e)
         {
+            isDragging = false;
+            isSelecting = false;
             isDrawing = true;
             pictureBox1.Cursor = Cursors.Cross;
         }
@@ -239,20 +289,37 @@ namespace MasterZeka
 
         private void PictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
+
+            if (e.Button == MouseButtons.Left)
+            {
+                isDragging = true;
+                dragStartPoint = e.Location;
+            }
+
             if (isSelecting)
             {
-                isDrawing= false;
+                isDragging = false;
+                isDrawing = false;
                 startPoint = e.Location; // Ýlk týklanan noktayý ata
                 selectedRectangle = new Rectangle(startPoint, new Size(0, 0)); // Seçimi baþlat
             }
             if (isDrawing)
             {
+                isDragging = false;
                 lastPoint = e.Location; // Start drawing from current mouse location
             }
         }
 
         private void PictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
+            if (isDragging && e.Button == MouseButtons.Left)
+            {
+                Point delta = new Point(e.X - dragStartPoint.X, e.Y - dragStartPoint.Y);
+
+                // Update PictureBox location
+                pictureBox1.Location = new Point(pictureBox1.Left + delta.X, pictureBox1.Top + delta.Y);
+
+            }
             if (isSelecting && !startPoint.IsEmpty)
             {
                 // Seçim alanýný dinamik olarak güncelle
@@ -269,8 +336,10 @@ namespace MasterZeka
             {
                 if (lastPoint != null)
                 {
-                    using (Pen pen = new Pen(color1, 2))
+                    using (Pen pen = new Pen(color1, kalemboyutu))
                     {
+                        pen.StartCap = System.Drawing.Drawing2D.LineCap.Round; // Kalemin başlangıç noktasını yuvarlak yap
+                        pen.EndCap = System.Drawing.Drawing2D.LineCap.Round;   // Kalemin bitiş noktasını yuvarlak yap
                         drawingGraphics.DrawLine(pen, lastPoint, e.Location);
                         lastPoint = e.Location;
                         pictureBox1.Invalidate(); // Trigger repaint
@@ -334,9 +403,8 @@ namespace MasterZeka
                                     GraphicsUnit.Pixel);
                     }
 
-                    // Kýrpýlmýþ resmi göstermek için yeni bir form aç
-                    CroppedImageForm croppedImageForm = new CroppedImageForm(croppedImage);
-                    croppedImageForm.Show();
+                    // Kýrpýlmýþ resmi göstermek için picturebox1 i kullan
+                    pictureBox1.Image = croppedImage;
                 }
                 selectedRectangle = Rectangle.Empty;
                 pictureBox1.Invalidate();
@@ -353,6 +421,10 @@ namespace MasterZeka
                 isDrawing = true;
                 pictureBox1.Cursor = Cursors.Cross; // Change cursor back to default
             }
+            if (isDragging)
+            {
+                isDragging = false;
+            }
         }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
@@ -366,6 +438,8 @@ namespace MasterZeka
                 using (Pen pen = new Pen(Color.Red, 2))
                 {
                     e.Graphics.DrawRectangle(pen, selectedRectangle);
+                    drawingGraphics.Clear(Color.Transparent);
+                    ((PictureBox)this.Controls.OfType<PictureBox>().FirstOrDefault()).Invalidate();
                 }
             }
         }
@@ -403,5 +477,144 @@ namespace MasterZeka
         {
             color1 = Color.Blue;
         }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            pictureBox1.Image = imageCache[i];
+
+            drawingGraphics.Clear(Color.Transparent);
+            ((PictureBox)this.Controls.OfType<PictureBox>().FirstOrDefault()).Invalidate();
+
+
+            pictureBox1.Cursor = Cursors.Default;
+            pictureBox1.Size = new Size(originalWidth, originalHeight);
+
+            // PictureBox'ı formun ortasında konumlandırın
+            pictureBox1.Location = new Point(
+                (ClientSize.Width - pictureBox1.Width) / 2,
+                (ClientSize.Height - pictureBox1.Height) / 2
+            );
+            isDragging = false;
+            isDrawing = false;
+            isSelecting = false;
+        }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            kalemboyutu++;
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            kalemboyutu--;
+        }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+            if (i == 0)
+            {
+                i = 322;
+                pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+            }
+            else
+            {
+                i--;
+                pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+            }
+            LoadImageAsync();
+            PreloadNextImages();
+            label1.Text = i.ToString();
+
+        }
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+            if (i == 322)
+            {
+                i = 0;
+                pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+            }
+            else
+            {
+                i++;
+                pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+            }
+            LoadImageAsync();
+            PreloadNextImages();
+            label1.Text = i.ToString();
+
+        }
+        private void button17_Click(object sender, EventArgs e)
+        {
+            const double zoomFactor = 1.5;
+
+            // Calculate the center of the PictureBox before resizing
+            Point center = new Point(pictureBox1.Left + pictureBox1.Width / 2, pictureBox1.Top + pictureBox1.Height / 2);
+
+            // Calculate new size of PictureBox
+            int newWidth = (int)(pictureBox1.Width * zoomFactor);
+            int newHeight = (int)(pictureBox1.Height * zoomFactor);
+
+            // Set the new size of PictureBox
+            pictureBox1.Size = new Size(newWidth, newHeight);
+
+            // Recalculate the location to keep the center in the same position
+            pictureBox1.Location = new Point(center.X - newWidth / 2, center.Y - newHeight / 2);
+
+            // Force PictureBox to redraw
+            pictureBox1.Invalidate();
+        }
+
+        private void button18_Click(object sender, EventArgs e)
+        {
+            const double zoomFactor = 1.5;
+
+            // Calculate the center of the PictureBox before resizing
+            Point center = new Point(pictureBox1.Left + pictureBox1.Width / 2, pictureBox1.Top + pictureBox1.Height / 2);
+
+            // Calculate new size of PictureBox
+            int newWidth = (int)(pictureBox1.Width / zoomFactor);
+            int newHeight = (int)(pictureBox1.Height / zoomFactor);
+
+            // Set the new size of PictureBox
+            pictureBox1.Size = new Size(newWidth, newHeight);
+
+            // Recalculate the location to keep the center in the same position
+            pictureBox1.Location = new Point(center.X - newWidth / 2, center.Y - newHeight / 2);
+
+            // Force PictureBox to redraw
+            pictureBox1.Invalidate();
+        }
+
+
+
+
+
+        private void button19_Click(object sender, EventArgs e)
+        {
+            isDragging = true;
+            isSelecting = false;
+            isDrawing = false;
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            string url = "https://www.youtube.com/@MasterZeka";
+
+            try
+            {
+                // URL'yi varsayılan web tarayıcısında aç
+                System.Diagnostics.Process.Start(new ProcessStartInfo
+                {
+                    FileName = url,
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("URL açılamadı: " + ex.Message);
+            }
+        }
     }
+
 }

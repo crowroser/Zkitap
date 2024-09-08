@@ -6,7 +6,6 @@ C:\Users\fatih\source\repos\MasterZeka\Zkitap\bin\Debug\net8.0-windows\MasterZek
 C:\Users\fatih\source\repos\MasterZeka\Zkitap\bin\Debug\net8.0-windows\Firebase.Storage.dll
 C:\Users\fatih\source\repos\MasterZeka\Zkitap\bin\Debug\net8.0-windows\Newtonsoft.Json.dll
 C:\Users\fatih\source\repos\MasterZeka\Zkitap\obj\Debug\net8.0-windows\MasterZeka.csproj.AssemblyReference.cache
-C:\Users\fatih\source\repos\MasterZeka\Zkitap\obj\Debug\net8.0-windows\MasterZeka.CroppedImageForm.resources
 C:\Users\fatih\source\repos\MasterZeka\Zkitap\obj\Debug\net8.0-windows\MasterZeka.Form1.resources
 C:\Users\fatih\source\repos\MasterZeka\Zkitap\obj\Debug\net8.0-windows\MasterZeka.csproj.GenerateResource.cache
 C:\Users\fatih\source\repos\MasterZeka\Zkitap\obj\Debug\net8.0-windows\MasterZeka.GeneratedMSBuildEditorConfig.editorconfig
