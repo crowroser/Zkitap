@@ -33,6 +33,8 @@
             button1 = new Button();
             button2 = new Button();
             groupBox1 = new GroupBox();
+            brushPreviewPictureBox = new PictureBox();
+            pictureBox2 = new PictureBox();
             button19 = new Button();
             button18 = new Button();
             button17 = new Button();
@@ -52,9 +54,9 @@
             button4 = new Button();
             button3 = new Button();
             label1 = new Label();
-            pictureBox2 = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)brushPreviewPictureBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             SuspendLayout();
             // 
@@ -71,7 +73,7 @@
             // 
             button1.Anchor = AnchorStyles.Right;
             button1.BackColor = Color.Transparent;
-            button1.BackgroundImage = (System.Drawing.Image)resources.GetObject("button1.BackgroundImage");
+            button1.BackgroundImage = (Image)resources.GetObject("button1.BackgroundImage");
             button1.BackgroundImageLayout = ImageLayout.Zoom;
             button1.FlatAppearance.BorderSize = 0;
             button1.FlatStyle = FlatStyle.Flat;
@@ -86,7 +88,7 @@
             // 
             button2.Anchor = AnchorStyles.Left;
             button2.BackColor = Color.Transparent;
-            button2.BackgroundImage = (System.Drawing.Image)resources.GetObject("button2.BackgroundImage");
+            button2.BackgroundImage = (Image)resources.GetObject("button2.BackgroundImage");
             button2.BackgroundImageLayout = ImageLayout.Zoom;
             button2.FlatAppearance.BorderSize = 0;
             button2.FlatStyle = FlatStyle.Flat;
@@ -100,7 +102,9 @@
             // groupBox1
             // 
             groupBox1.Anchor = AnchorStyles.Left;
+            groupBox1.AutoSize = true;
             groupBox1.BackColor = Color.White;
+            groupBox1.Controls.Add(brushPreviewPictureBox);
             groupBox1.Controls.Add(pictureBox2);
             groupBox1.Controls.Add(button19);
             groupBox1.Controls.Add(button18);
@@ -122,30 +126,52 @@
             groupBox1.Controls.Add(button3);
             groupBox1.Location = new Point(12, 213);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(224, 631);
+            groupBox1.Size = new Size(226, 600);
             groupBox1.TabIndex = 3;
             groupBox1.TabStop = false;
             // 
+            // brushPreviewPictureBox
+            // 
+            brushPreviewPictureBox.Location = new Point(163, 224);
+            brushPreviewPictureBox.Name = "brushPreviewPictureBox";
+            brushPreviewPictureBox.Size = new Size(20, 20);
+            brushPreviewPictureBox.TabIndex = 17;
+            brushPreviewPictureBox.TabStop = false;
+            // 
+            // pictureBox2
+            // 
+            pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
+            pictureBox2.Location = new Point(17, 477);
+            pictureBox2.Name = "pictureBox2";
+            pictureBox2.Size = new Size(100, 97);
+            pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox2.TabIndex = 16;
+            pictureBox2.TabStop = false;
+            pictureBox2.Click += pictureBox2_Click;
+            // 
             // button19
             // 
-            button19.Location = new Point(17, 351);
+            button19.BackgroundImage = (Image)resources.GetObject("button19.BackgroundImage");
+            button19.BackgroundImageLayout = ImageLayout.Zoom;
+            button19.FlatAppearance.BorderSize = 0;
+            button19.FlatStyle = FlatStyle.Flat;
+            button19.Location = new Point(75, 332);
             button19.Name = "button19";
-            button19.Size = new Size(201, 34);
+            button19.Size = new Size(82, 52);
             button19.TabIndex = 15;
-            button19.Text = "Hareket Ettir";
             button19.UseVisualStyleBackColor = true;
             button19.Click += button19_Click;
             // 
             // button18
             // 
             button18.BackColor = Color.Transparent;
-            button18.BackgroundImage = (System.Drawing.Image)resources.GetObject("button18.BackgroundImage");
+            button18.BackgroundImage = (Image)resources.GetObject("button18.BackgroundImage");
             button18.BackgroundImageLayout = ImageLayout.Zoom;
             button18.FlatAppearance.BorderSize = 0;
             button18.FlatStyle = FlatStyle.Flat;
-            button18.Location = new Point(131, 391);
+            button18.Location = new Point(163, 332);
             button18.Name = "button18";
-            button18.Size = new Size(87, 46);
+            button18.Size = new Size(55, 46);
             button18.TabIndex = 14;
             button18.UseVisualStyleBackColor = false;
             button18.Click += button18_Click;
@@ -153,13 +179,13 @@
             // button17
             // 
             button17.BackColor = Color.Transparent;
-            button17.BackgroundImage = (System.Drawing.Image)resources.GetObject("button17.BackgroundImage");
+            button17.BackgroundImage = (Image)resources.GetObject("button17.BackgroundImage");
             button17.BackgroundImageLayout = ImageLayout.Zoom;
             button17.FlatAppearance.BorderSize = 0;
             button17.FlatStyle = FlatStyle.Flat;
-            button17.Location = new Point(17, 391);
+            button17.Location = new Point(17, 332);
             button17.Name = "button17";
-            button17.Size = new Size(87, 46);
+            button17.Size = new Size(52, 46);
             button17.TabIndex = 13;
             button17.UseVisualStyleBackColor = false;
             button17.Click += button17_Click;
@@ -168,11 +194,11 @@
             // 
             button16.Anchor = AnchorStyles.Right;
             button16.BackColor = Color.Transparent;
-            button16.BackgroundImage = (System.Drawing.Image)resources.GetObject("button16.BackgroundImage");
+            button16.BackgroundImage = (Image)resources.GetObject("button16.BackgroundImage");
             button16.BackgroundImageLayout = ImageLayout.Zoom;
             button16.FlatAppearance.BorderSize = 0;
             button16.FlatStyle = FlatStyle.Flat;
-            button16.Location = new Point(163, 476);
+            button16.Location = new Point(165, 431);
             button16.Name = "button16";
             button16.Size = new Size(55, 46);
             button16.TabIndex = 5;
@@ -183,11 +209,11 @@
             // 
             button15.Anchor = AnchorStyles.Left;
             button15.BackColor = Color.Transparent;
-            button15.BackgroundImage = (System.Drawing.Image)resources.GetObject("button15.BackgroundImage");
+            button15.BackgroundImage = (Image)resources.GetObject("button15.BackgroundImage");
             button15.BackgroundImageLayout = ImageLayout.Zoom;
             button15.FlatAppearance.BorderSize = 0;
             button15.FlatStyle = FlatStyle.Flat;
-            button15.Location = new Point(17, 474);
+            button15.Location = new Point(102, 429);
             button15.Name = "button15";
             button15.Size = new Size(55, 48);
             button15.TabIndex = 5;
@@ -196,9 +222,9 @@
             // 
             // button14
             // 
-            button14.Location = new Point(123, 258);
+            button14.Location = new Point(125, 250);
             button14.Name = "button14";
-            button14.Size = new Size(95, 37);
+            button14.Size = new Size(95, 30);
             button14.TabIndex = 12;
             button14.Text = "Kalem-";
             button14.UseVisualStyleBackColor = true;
@@ -206,7 +232,7 @@
             // 
             // button13
             // 
-            button13.Location = new Point(123, 201);
+            button13.Location = new Point(123, 182);
             button13.Name = "button13";
             button13.Size = new Size(95, 36);
             button13.TabIndex = 11;
@@ -216,9 +242,9 @@
             // 
             // button12
             // 
-            button12.Location = new Point(17, 305);
+            button12.Location = new Point(17, 286);
             button12.Name = "button12";
-            button12.Size = new Size(201, 40);
+            button12.Size = new Size(203, 40);
             button12.TabIndex = 10;
             button12.Text = "Sayfayı Eski Haline Getir";
             button12.UseVisualStyleBackColor = true;
@@ -228,7 +254,7 @@
             // 
             button11.BackColor = Color.Blue;
             button11.FlatStyle = FlatStyle.Flat;
-            button11.Location = new Point(67, 253);
+            button11.Location = new Point(67, 234);
             button11.Name = "button11";
             button11.Size = new Size(50, 46);
             button11.TabIndex = 9;
@@ -239,7 +265,7 @@
             // 
             button10.BackColor = Color.Black;
             button10.FlatStyle = FlatStyle.Flat;
-            button10.Location = new Point(17, 253);
+            button10.Location = new Point(17, 234);
             button10.Name = "button10";
             button10.Size = new Size(44, 46);
             button10.TabIndex = 8;
@@ -250,7 +276,7 @@
             // 
             button9.BackColor = Color.Red;
             button9.FlatStyle = FlatStyle.Flat;
-            button9.Location = new Point(67, 201);
+            button9.Location = new Point(67, 182);
             button9.Name = "button9";
             button9.Size = new Size(50, 46);
             button9.TabIndex = 7;
@@ -261,7 +287,7 @@
             // 
             button8.BackColor = Color.White;
             button8.FlatStyle = FlatStyle.Flat;
-            button8.Location = new Point(17, 201);
+            button8.Location = new Point(17, 182);
             button8.Name = "button8";
             button8.Size = new Size(44, 46);
             button8.TabIndex = 6;
@@ -270,11 +296,11 @@
             // 
             // button7
             // 
-            button7.BackgroundImage = (System.Drawing.Image)resources.GetObject("button7.BackgroundImage");
+            button7.BackgroundImage = (Image)resources.GetObject("button7.BackgroundImage");
             button7.BackgroundImageLayout = ImageLayout.Zoom;
             button7.FlatAppearance.BorderSize = 0;
             button7.FlatStyle = FlatStyle.Flat;
-            button7.Location = new Point(110, 115);
+            button7.Location = new Point(123, 96);
             button7.Name = "button7";
             button7.Size = new Size(95, 80);
             button7.TabIndex = 5;
@@ -283,12 +309,12 @@
             // 
             // button6
             // 
-            button6.BackgroundImage = (System.Drawing.Image)resources.GetObject("button6.BackgroundImage");
+            button6.BackgroundImage = (Image)resources.GetObject("button6.BackgroundImage");
             button6.BackgroundImageLayout = ImageLayout.Zoom;
             button6.FlatAppearance.BorderSize = 0;
             button6.FlatStyle = FlatStyle.Flat;
-            button6.Image = (System.Drawing.Image)resources.GetObject("button6.Image");
-            button6.Location = new Point(17, 115);
+            button6.Image = (Image)resources.GetObject("button6.Image");
+            button6.Location = new Point(17, 96);
             button6.Name = "button6";
             button6.Size = new Size(87, 80);
             button6.TabIndex = 4;
@@ -297,28 +323,28 @@
             // 
             // textBox1
             // 
-            textBox1.Location = new Point(17, 443);
+            textBox1.Location = new Point(17, 390);
             textBox1.Name = "textBox1";
-            textBox1.Size = new Size(131, 27);
+            textBox1.Size = new Size(203, 27);
             textBox1.TabIndex = 3;
             // 
             // button5
             // 
             button5.BackColor = Color.Transparent;
-            button5.BackgroundImage = (System.Drawing.Image)resources.GetObject("button5.BackgroundImage");
+            button5.BackgroundImage = (Image)resources.GetObject("button5.BackgroundImage");
             button5.BackgroundImageLayout = ImageLayout.Zoom;
             button5.FlatAppearance.BorderSize = 0;
             button5.FlatStyle = FlatStyle.Flat;
-            button5.Location = new Point(78, 474);
+            button5.Location = new Point(123, 477);
             button5.Name = "button5";
-            button5.Size = new Size(81, 48);
+            button5.Size = new Size(97, 97);
             button5.TabIndex = 2;
             button5.UseVisualStyleBackColor = false;
             button5.Click += button5_Click;
             // 
             // button4
             // 
-            button4.Location = new Point(148, 443);
+            button4.Location = new Point(17, 431);
             button4.Name = "button4";
             button4.Size = new Size(70, 27);
             button4.TabIndex = 1;
@@ -328,9 +354,9 @@
             // 
             // button3
             // 
-            button3.Location = new Point(17, 35);
+            button3.Location = new Point(17, 16);
             button3.Name = "button3";
-            button3.Size = new Size(188, 74);
+            button3.Size = new Size(201, 74);
             button3.TabIndex = 0;
             button3.Text = "Seçilen Alanı Yaklaştır";
             button3.UseVisualStyleBackColor = true;
@@ -345,17 +371,6 @@
             label1.Size = new Size(50, 20);
             label1.TabIndex = 4;
             label1.Text = "label1";
-            // 
-            // pictureBox2
-            // 
-            pictureBox2.Image = (System.Drawing.Image)resources.GetObject("pictureBox2.Image");
-            pictureBox2.Location = new Point(17, 528);
-            pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(188, 97);
-            pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureBox2.TabIndex = 16;
-            pictureBox2.TabStop = false;
-            pictureBox2.Click += pictureBox2_Click;
             // 
             // Form1
             // 
@@ -375,6 +390,7 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)brushPreviewPictureBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -407,5 +423,6 @@
         private Button button17;
         private Button button19;
         private PictureBox pictureBox2;
+        private PictureBox brushPreviewPictureBox;
     }
 }

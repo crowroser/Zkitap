@@ -58,7 +58,7 @@ namespace MasterZeka
 
             // Add drawing overlay to pictureBox
             pictureBox1.Image = drawingBitmap;
-
+            UpdateBrushPreview(kalemboyutu);
             // Yakınlaştırma ve Uzaklaştırma butonları ekleyin
             button17.Click += button17_Click;
             button18.Click += button18_Click;
@@ -461,21 +461,25 @@ namespace MasterZeka
         private void button8_Click(object sender, EventArgs e)
         {
             color1 = Color.White;
+            UpdateBrushPreview(kalemboyutu);
         }
 
         private void button9_Click(object sender, EventArgs e)
         {
             color1 = Color.Red;
+            UpdateBrushPreview(kalemboyutu);
         }
 
         private void button10_Click(object sender, EventArgs e)
         {
             color1 = Color.Black;
+            UpdateBrushPreview(kalemboyutu);
         }
 
         private void button11_Click(object sender, EventArgs e)
         {
             color1 = Color.Blue;
+            UpdateBrushPreview(kalemboyutu);
         }
 
         private void button12_Click(object sender, EventArgs e)
@@ -501,12 +505,32 @@ namespace MasterZeka
 
         private void button13_Click(object sender, EventArgs e)
         {
-            kalemboyutu++;
+            
+            if(kalemboyutu == 20)
+            {
+                kalemboyutu = 20;
+                UpdateBrushPreview(kalemboyutu);
+            }
+            else
+            {
+                kalemboyutu++;
+                UpdateBrushPreview(kalemboyutu);
+            }
         }
 
         private void button14_Click(object sender, EventArgs e)
         {
-            kalemboyutu--;
+
+            if (kalemboyutu == 2)
+            {
+                kalemboyutu = 2;
+                UpdateBrushPreview(kalemboyutu);
+            }
+            else
+            {
+                kalemboyutu--;
+                UpdateBrushPreview(kalemboyutu);
+            }
         }
 
         private void button15_Click(object sender, EventArgs e)
@@ -615,6 +639,24 @@ namespace MasterZeka
                 MessageBox.Show("URL açılamadı: " + ex.Message);
             }
         }
+        private void UpdateBrushPreview(int kalemboyutu)
+        {
+            
+            // Önizleme PictureBox'ını temizle
+            brushPreviewPictureBox.Refresh();
+
+            using (Graphics g = brushPreviewPictureBox.CreateGraphics())
+            {
+                // Kalem rengi ve boyutu ile küçük bir daire çiz
+                using (Brush brush = new SolidBrush(color1)) // Mevcut kalem rengi
+                {
+                    int centerX = brushPreviewPictureBox.Width / 2;
+                    int centerY = brushPreviewPictureBox.Height / 2;
+                    g.FillEllipse(brush, centerX - kalemboyutu / 2, centerY - kalemboyutu / 2, kalemboyutu, kalemboyutu);
+                }
+            }
+        }
+
     }
 
 }
